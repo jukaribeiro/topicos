@@ -45,7 +45,6 @@ ADC_HandleTypeDef hadc1;
 /* USER CODE BEGIN PV */
 #define LIMITE_ESCURIDAO  1200  // Ajuste este limite (0 a 4095) conforme a luz do ambiente
 uint16_t adc_value = 0;
-uint16_t troca_value = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
