@@ -43,7 +43,7 @@
 ADC_HandleTypeDef hadc1;
 
 /* USER CODE BEGIN PV */
-#define LIMITE_ESCURIDAO  1200  // Ajuste este limite (0 a 4095) conforme a luz do ambiente
+#define LIMITE_ESCURIDAO  1200  // Limite abaixo do qual acende o LED
 uint16_t adc_value = 0;
 /* USER CODE END PV */
 
@@ -98,7 +98,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      // --- 1. LEITURA DO ADC (LDR no PA0) ---
+
       HAL_ADC_Start(&hadc1);
       if (HAL_ADC_PollForConversion(&hadc1, 100) == HAL_OK)
       {
@@ -107,23 +107,24 @@ int main(void)
       HAL_ADC_Stop(&hadc1);
       if (HAL_GPIO_ReadPin(BOTAO_GPIO_Port, BOTAO_Pin) == GPIO_PIN_SET)
       {
-      // --- 2. CONTROLE AUTOMÁTICO DO LED (PA8 com label 'LED') ---
-      // Se o valor do ADC indicar escuridão (abaixo do limite fixo), acende o LED
+
+      // Se o valor do ADC indicar leitura abaixo do limite fixo, acende o LED
     	  if (adc_value < LIMITE_ESCURIDAO)
     	  {
-    		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);   // Escuro: Acende o LED
+    		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);   
     	  }
     	  else
     	  {
-    		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET); // Claro: Apaga o LED
+    		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET); 
     	  }
 
-    	  HAL_Delay(50); // Pequena pausa para estabilidade das leituras
+    	  HAL_Delay(50); 
       }
+      // Se o botão for pressionado altera o estado atual do led 
       if (HAL_GPIO_ReadPin(BOTAO_GPIO_Port, BOTAO_Pin) == GPIO_PIN_RESET)
       {
     	  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-    	  HAL_Delay(1000);
+    	  HAL_Delay(1000); //Pausa para estabilizar a leitura do botão
       }
     /* USER CODE END WHILE */
 
